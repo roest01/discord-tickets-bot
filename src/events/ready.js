@@ -17,15 +17,17 @@ module.exports = {
 
 		const updatePresence = () => {
 			const presence = config.presences[Math.floor(Math.random() * config.presences.length)];
-			let activity = presence.activity + config.append_presence;
-			activity = activity.replace(/%s/g, config.prefix);
-			client.user.setPresence({
-				activity: {
-					name: activity,
-					type: presence.type.toUpperCase()
-				}
-			}).catch(log.error);
-			log.debug(`Updated presence: ${activity} ${presence.type}`);
+			if (!!presence){
+				let activity = presence.activity + config.append_presence;
+				activity = activity.replace(/%s/g, config.prefix);
+				client.user.setPresence({
+					activity: {
+						name: activity,
+						type: presence.type.toUpperCase()
+					}
+				}).catch(log.error);
+				log.debug(`Updated presence: ${activity} ${presence.type}`);
+			}
 		};
 
 		updatePresence();
