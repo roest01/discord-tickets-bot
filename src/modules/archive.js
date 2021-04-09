@@ -24,6 +24,11 @@ module.exports.add = (message) => {
 		let path = `../../user/transcripts/text/${message.channel.id}.txt`,
 			time = dtf('HH:mm:ss n_D MMM YY', message.createdAt),
 			msg = message.cleanContent;
+
+		if (msg === ""){
+			msg = message.embeds[0].description;
+		}
+
 		message.attachments.each(a => msg += '\n' + a.url);
 		let string = `[${time}] [${message.author.tag}] :> ${msg}`;
 		fs.appendFileSync(join(__dirname, path), string + '\n');
