@@ -95,6 +95,7 @@ module.exports = {
 
 	panel: {
 		title: 'Support Tickets',
+		image: 'https://example.com/demo.png',
 		description: 'Need help? No problem! React to this panel to create a new support ticket so our Support Team can assist you.',
 		reaction: '🧾'
 	},

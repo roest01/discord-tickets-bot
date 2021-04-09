@@ -52,6 +52,7 @@ module.exports = {
 				.setColor(config.colour)
 				.setTitle(config.panel.title)
 				.setDescription(config.panel.description)
+				.setThumbnail(config.panel.image)
 				.setFooter(guild.name, guild.iconURL())
 		); // send new panel
 
