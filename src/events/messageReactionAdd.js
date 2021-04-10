@@ -70,8 +70,8 @@ module.exports = {
 					new MessageEmbed()
 						.setColor(config.err_colour)
 						.setAuthor(u.username, u.displayAvatarURL())
-						.setTitle(`❌ **You already have ${tickets.count} or more open tickets**`)
-						.setDescription(`Use \`${config.prefix}close\` in a server channel to close unneeded tickets.\n\n${ticketList.join(',\n')}`)
+						.setTitle(`❌ **Du hast bereits ${tickets.count} offene Tickets**`)
+						.setDescription(`Nutze \`${config.prefix}close\` in einem Server Channel um abgeschlossene Tickets zu schließen.\n\n${ticketList.join(',\n')}`)
 						.setFooter(channel.guild.name, channel.guild.iconURL())
 				);
 			} catch (e) {
@@ -79,9 +79,9 @@ module.exports = {
 					new MessageEmbed()
 						.setColor(config.err_colour)
 						.setAuthor(u.username, u.displayAvatarURL())
-						.setTitle(`❌ **You already have ${tickets.count} or more open tickets**`)
-						.setDescription(`Use \`${config.prefix}close\` to close unneeded tickets.\n\n${ticketList.join(',\n')}`)
-						.setFooter(channel.guild.name + ' | This message will be deleted in 15 seconds', channel.guild.iconURL())
+						.setTitle(`❌ **Du hast bereits ${tickets.count} offene Tickets**`)
+						.setDescription(`Nutze \`${config.prefix}close\` um abgeschlossene Tickets zu schließen.\n\n${ticketList.join(',\n')}`)
+						.setFooter(channel.guild.name + ' | Diese Nachricht wird in 15 Sekunden gelöscht.', channel.guild.iconURL())
 				);
 				return m.delete({ timeout: 15000 });
 			}
@@ -97,7 +97,7 @@ module.exports = {
 			topic: topic
 		});
 
-		let name = 'ticket-' + ticket.id;
+		let name = 'bewerbung-' + ticket.id;
 
 		channel.guild.channels.create(name, {
 			type: 'text',
@@ -135,16 +135,16 @@ module.exports = {
 			let ping;
 			switch (config.tickets.ping) {
 			case 'staff':
-				ping = `<@&${config.staff_role}>,\n`;
+				ping = `<@&${config.staff_role}> `;
 				break;
 			case false:
 				ping = '';
 				break;
 			default:
-				ping = `@${config.tickets.ping},\n`;
+				ping = `@${config.tickets.ping} `;
 			}
 
-			await c.send(ping + `${u} has created a new ticket`);
+			await c.send(`Cool ${u} - wir freuen uns über neue aktive Mitglieder. Deine Bewerbung kannst du gleich hier lassen. Ein ` + ping + `wird sich um alles weitere kümmern.`);
 
 			if (config.tickets.send_img) {
 				const images = fs.readdirSync(join(__dirname, '../../user/images'));
@@ -163,11 +163,13 @@ module.exports = {
 			let w = await c.send(
 				new MessageEmbed()
 					.setColor(config.colour)
-					.setAuthor(u.username, u.displayAvatarURL())
+					.setAuthor('Bewerbung von ' + u.username + ' bei EuroElite', u.displayAvatarURL())
 					.setDescription(text)
-					.addField('Topic', `\`${topic}\``)
-					.setFooter(channel.guild.name, channel.guild.iconURL())
 			);
+
+
+			this.sendQuestionMessage(0, config, c, u, config.tickets.defaultStaff);
+
 
 			if (config.tickets.pin) await w.pin();
 			// await w.pin().then(m => m.delete()); // oopsie, this deletes the pinned message
@@ -177,15 +179,68 @@ module.exports = {
 					new MessageEmbed()
 						.setColor(config.colour)
 						.setAuthor(u.username, u.displayAvatarURL())
-						.setTitle('New ticket (via panel)')
+						.setTitle('Neue Bewerbung (via panel)')
 						.setDescription(`\`${topic}\``)
-						.addField('Creator', u, true)
-						.addField('Channel', c, true)
+						.addField('Erstellt von', u, true)
+						.addField('Kanal', c, true)
 						.setFooter(channel.guild.name, channel.guild.iconURL())
 						.setTimestamp()
 				);
 
 			log.info(`${u.tag} created a new ticket (#${name}) via panel`);
 		}).catch(log.error);
+	},
+
+	sendQuestionMessage(iterator, config, channel, user, moderatorRole){
+		let self = this;
+		let questions = config.tickets.questions;
+		//let filter = m => m.content !== "";
+		let filter = m => m.author.id === user.id
+
+		if (!!questions[iterator]){
+			channel.send(
+				new MessageEmbed()
+					.setColor(config.question_color)
+					.setDescription(`${questions[iterator].replace(' {staff} ', ' @' + moderatorRole + ' ')}`)
+					.setFooter(channel.guild.name, channel.guild.iconURL())
+					.setTimestamp()
+			).then(() => {
+				channel.awaitMessages(filter, {
+					max: 1,
+					time: 1000 * 60 * 60 * 24,
+					errors: ['time']
+				})
+					.then(message => {
+						message = message.first();
+
+						let clanMapping = config.tickets.clanMapping;
+
+						for (let role in clanMapping) {
+							if (clanMapping.hasOwnProperty(role)) {
+								clanMapping[role].forEach((keyword) => {
+									if (
+										message.content !== "" &&
+										message.content.toLowerCase().includes(keyword) &&
+										message.content.startsWith('-close')
+									){
+										moderatorRole = role;
+									}
+								});
+							}
+						}
+
+						iterator++; //increase iterator for next message
+						self.sendQuestionMessage(iterator, config, channel, user, moderatorRole);
+						//message.content.toUpperCase() == 'YES'
+
+					})
+					.catch(collected => {
+						console.log("error in timeout", collected);
+
+						channel.send('Sorry <@'+user.id+'>, du hast leider etwas zu lange gebraucht. Bitte stell sicher, dass du uns folgende Fragen beantwortet. Ein Mitarbeiter wird sich darum kümmern. Hast du kein Interesse mehr schließe diese Bewerbung via `-close`!\n\n' + questions.join('\n'));
+					});
+			});
+		}
+
 	}
 };

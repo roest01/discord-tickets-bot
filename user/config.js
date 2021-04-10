@@ -45,6 +45,7 @@ module.exports = {
 	],
 	append_presence: ' | %shelp',
 	colour: '#009999',
+	question_color: '#006691',
 	err_colour: 'RED',
 	cooldown: 3,
 	guild: '', // ID of your guild (REQUIRED)
