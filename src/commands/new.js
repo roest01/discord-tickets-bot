@@ -93,7 +93,7 @@ module.exports = {
 			topic: topic
 		});
 
-		let name = 'ticket-' + ticket.get('id');
+		let name = 'bewerbung-' + ticket.get('id');
 
 		guild.channels.create(name, {
 			type: 'text',

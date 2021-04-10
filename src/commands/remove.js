@@ -13,7 +13,7 @@ module.exports = {
 	description: 'Remove a member from ticket channel',
 	usage: '<@member> [... #channel]',
 	aliases: ['none'],
-	example: 'remove @member from #ticket-23',
+	example: 'remove @member from #bewerbung-23',
 	args: true,
 	async execute(client, message, args, log, { config, Ticket }) {
 		const guild = client.guilds.cache.get(config.guild);

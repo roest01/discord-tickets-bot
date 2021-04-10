@@ -116,8 +116,8 @@ module.exports = {
 					new MessageEmbed()
 						.setColor(config.colour)
 						.setAuthor(message.author.username, message.author.displayAvatarURL())
-						.setTitle(`**\`${tickets.count}\` tickets closed**`)
-						.setDescription(`**\`${tickets.count}\`** tickets closed by ${message.author}`)
+						.setTitle(`**\`${tickets.count}\` Tickets geschlossen**`)
+						.setDescription(`**\`${tickets.count}\`** Tickets geschlossen von ${message.author}`)
 						.setFooter(guild.name, guild.iconURL())
 				);
 
@@ -126,8 +126,8 @@ module.exports = {
 					new MessageEmbed()
 						.setColor(config.colour)
 						.setAuthor(message.author.username, message.author.displayAvatarURL())
-						.setTitle(`✅ ** \`${tickets.count}\` tickets closed**`)
-						.setDescription('The channels will be automatically deleted in a few seconds, once the contents have been archived.')
+						.setTitle(`✅ ** \`${tickets.count}\` Tickets geschlossen**`)
+						.setDescription('Die Kanäle werden automatisch gelöscht, sobald der Inhalt archiviert wurde.')
 						.setFooter(guild.name, guild.iconURL())
 				);
 
@@ -197,7 +197,7 @@ module.exports = {
 							embed.addField('Text Transcript', 'See attachment');
 							res.files = [{
 								attachment: paths.text,
-								name: `ticket-${id}-${channel}.txt`
+								name: `bewerbung-${id}-${channel}.txt`
 							}];
 						}
 

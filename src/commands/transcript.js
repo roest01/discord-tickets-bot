@@ -63,11 +63,11 @@ module.exports = {
 
 		let file = `../../user/transcripts/text/${ticket.channel}.txt`;
 		if (fs.existsSync(join(__dirname, file))) {
-			embed.addField('Text transcript', 'See attachment');
+			embed.addField('Text Protokoll', 'Siehe Anhang');
 			res.files = [
 				{
 					attachment: join(__dirname, file),
-					name: `ticket-${id}-${ticket.channel}.txt`
+					name: `bewerbung-${id}-${ticket.channel}.txt`
 				}
 			];
 		}

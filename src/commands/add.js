@@ -13,7 +13,7 @@ module.exports = {
 	description: 'Add a member to a ticket channel',
 	usage: '<@member> [... #channel]',
 	aliases: ['none'],
-	example: 'add @member to #ticket-23',
+	example: 'add @member to #bewerbung-23',
 	args: true,
 	async execute(client, message, args, log, { config, Ticket }) {
 		const guild = client.guilds.cache.get(config.guild);

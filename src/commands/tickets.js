@@ -97,15 +97,15 @@ module.exports = {
 		}
 
 		let pre = context === 'self' ? 'You have' : user.username + ' has';
-		embed.addField('Open tickets', openTickets.count === 0 ? `${pre} no open tickets.` : open.join('\n\n'), false);
-		embed.addField('Closed tickets', closedTickets.count === 0 ? `${pre} no old tickets` : closed.join('\n\n'), false);
+		embed.addField('offene Tickets', openTickets.count === 0 ? `${pre} keine offenen Tickets.` : open.join('\n\n'), false);
+		embed.addField('Geschlossene Tickets', closedTickets.count === 0 ? `${pre} keine alten Tickets` : closed.join('\n\n'), false);
 
 		message.delete({timeout: 15000});
 
 		let channel;
 		try {
 			channel = message.author.dmChannel || await message.author.createDM();
-			message.channel.send('Sent to DM').then(msg => msg.delete({timeout: 15000}));
+			message.channel.send('Via DM gesendet').then(msg => msg.delete({timeout: 15000}));
 		} catch (e) {
 			channel = message.channel;
 		}
