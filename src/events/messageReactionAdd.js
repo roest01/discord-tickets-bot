@@ -144,7 +144,7 @@ module.exports = {
 				ping = `@${config.tickets.ping} `;
 			}
 
-			await c.send(`Cool ${u} - wir freuen uns über neue aktive Mitglieder. Deine Bewerbung kannst du gleich hier lassen. Ein ` + ping + `wird sich um alles weitere kümmern.`);
+			await c.send(`Cool ${u} - wir freuen uns über neue aktive Mitglieder. Deine Bewerbung kannst du gleich hier lassen. Ein Mitarbeiter wird sich um alles weitere kümmern.`);
 
 			if (config.tickets.send_img) {
 				const images = fs.readdirSync(join(__dirname, '../../user/images'));
@@ -195,13 +195,13 @@ module.exports = {
 		let self = this;
 		let questions = config.tickets.questions;
 		//let filter = m => m.content !== "";
-		let filter = m => m.author.id === user.id
+		let filter = m => m.author.id === user.id && !m.content.startsWith('-')
 
 		if (!!questions[iterator]){
 			channel.send(
 				new MessageEmbed()
 					.setColor(config.question_color)
-					.setDescription(`${questions[iterator].replace(' {staff} ', ' @' + moderatorRole + ' ')}`)
+					.setDescription(`${questions[iterator].replace('{staff}', '<@&' + config.tickets.roleMapping[moderatorRole] + '>')}`)
 					.setFooter(channel.guild.name, channel.guild.iconURL())
 					.setTimestamp()
 			).then(() => {
@@ -220,9 +220,11 @@ module.exports = {
 								clanMapping[role].forEach((keyword) => {
 									if (
 										message.content !== "" &&
-										message.content.toLowerCase().includes(keyword) &&
-										message.content.startsWith('-close')
+										message.content.toLowerCase().includes(keyword)
 									){
+
+										channel.send(`Aufgrund der Erwähnung von \`${keyword}\` wurde die Zuständigkeit an <@&${config.tickets.roleMapping[role]}> übergeben. Bitte fahre mit der Beantwortung der Fragen fort.`)
+										
 										moderatorRole = role;
 									}
 								});

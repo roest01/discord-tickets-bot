@@ -174,7 +174,7 @@ module.exports = {
 						.setFooter(guild.name, guild.iconURL());
 
 					if (fs.existsSync(paths.text)) {
-						embed.addField('Text Verlauf', 'Verlauf der Bewerbung von ' + message.author.username);
+						embed.addField('Text Verlauf', `Verlauf der Bewerbung von ${u.tag}`);
 						res.files = [{
 							attachment: paths.text,
 							name: `bewerbung-${ticket.id}-${ticket.get('channel')}.txt`
