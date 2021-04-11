@@ -144,6 +144,9 @@ module.exports = {
 				ping = `@${config.tickets.ping} `;
 			}
 
+			let helpMessage = await c.send(`\`\`\`-close · Schließt dieses Ticket\n-delete · Löscht dieses Ticket. \n-topic · Ändert das Thema \n-add · Fügt jemanden zum Ticket hinzu\`\`\``);
+			await helpMessage.pin();
+
 			await c.send(`Cool ${u} - wir freuen uns über neue aktive Mitglieder. Deine Bewerbung kannst du gleich hier lassen. Ein Mitarbeiter wird sich um alles weitere kümmern.`);
 
 			if (config.tickets.send_img) {
