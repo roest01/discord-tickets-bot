@@ -97,7 +97,7 @@ module.exports = {
 			topic: topic
 		});
 
-		let name = 'bewerbung-' + ticket.id;
+		let name = this.ticketName = 'bewerbung-' + ticket.id;
 
 		channel.guild.channels.create(name, {
 			type: 'text',
@@ -222,10 +222,13 @@ module.exports = {
 							if (clanMapping.hasOwnProperty(role)) {
 								clanMapping[role].forEach((keyword) => {
 									if (
+										!!message &&
 										message.content !== "" &&
-										message.content.toLowerCase().includes(keyword)
+										message.content.toLowerCase().includes(keyword) &&
+										role !== moderatorRole
 									){
 
+										channel.setName(keyword+ "-" + this.ticketName);
 										channel.send(`Aufgrund der Erwähnung von \`${keyword}\` wurde die Zuständigkeit an <@&${config.tickets.roleMapping[role]}> übergeben. Bitte fahre mit der Beantwortung der Fragen fort.`)
 										
 										moderatorRole = role;

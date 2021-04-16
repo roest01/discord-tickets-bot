@@ -85,15 +85,17 @@ module.exports = {
 			topic = config.tickets.default_topic.command;
 		}
 
+		let name = 'bewerbung-' + ticket.get('id');
+
 		let ticket = await Ticket.create({
 			channel: '',
 			creator: message.author.id,
 			open: true,
 			archived: false,
-			topic: topic
+			topic: topic,
+			name: name
 		});
 
-		let name = 'bewerbung-' + ticket.get('id');
 
 		guild.channels.create(name, {
 			type: 'text',

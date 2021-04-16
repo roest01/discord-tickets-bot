@@ -162,7 +162,7 @@ module.exports = {
 			});
 
 
-			log.info(`${message.author.tag} löschte ein Ticket (#bewerbung-${ticket.id})`);
+			log.info(`${message.author.tag} löschte ein Ticket (#${ticket.id})`);
 
 			if (config.logs.discord.enabled) {
 				client.channels.cache.get(config.logs.discord.channel).send(
