@@ -89,7 +89,7 @@ module.exports = {
 			}
 		}
 
-		let topic = config.tickets.default_topic.command;
+		let topic = config.tickets.default_topic.panel;
 		
 		let ticket = await Ticket.create({
 			channel: '',
