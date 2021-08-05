@@ -9,6 +9,8 @@
 const { MessageEmbed } = require('discord.js');
 const fs = require('fs');
 const { join } = require('path');
+const { checkTopic } = require('../modules/utils');
+
 
 module.exports = {
 	event: 'messageReactionAdd',
