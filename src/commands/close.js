@@ -64,7 +64,7 @@ module.exports = {
 			json: join(__dirname, `../../user/transcripts/raw/entities/${ticket.get('channel')}.json`)
 		};
 
-		if (message.author.id !== ticket.creator && !message.member.roles.cache.has(config.staff_role))
+		if (message.author.id !== ticket.creator && !message.member.roles.cache.has(config.staff_role) && !message.member.roles.cache.has(750317990750191616))
 			return message.channel.send(
 				new MessageEmbed()
 					.setColor(config.err_colour)

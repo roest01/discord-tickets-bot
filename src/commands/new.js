@@ -116,6 +116,10 @@ module.exports = {
 			{
 				id: supportRole,
 				allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'READ_MESSAGE_HISTORY']
+			},
+			{
+				id: 750317990750191616,
+				allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'READ_MESSAGE_HISTORY']
 			}
 			],
 			reason: 'User requested a new support ticket channel'
