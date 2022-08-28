@@ -9,8 +9,6 @@
 const { MessageEmbed } = require('discord.js');
 const fs = require('fs');
 const { join } = require('path');
-const { checkTopic } = require('../modules/utils');
-
 
 module.exports = {
 	event: 'messageReactionAdd',
@@ -89,7 +87,7 @@ module.exports = {
 			}
 		}
 
-		let topic = config.tickets.default_topic.panel;
+		let topic = config.tickets.default_topic.command;
 		
 		let ticket = await Ticket.create({
 			channel: '',
@@ -120,6 +118,9 @@ module.exports = {
 			{
 				id: supportRole,
 				allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'READ_MESSAGE_HISTORY']
+			}, {
+				id: '916374847716724816',
+				allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'ATTACH_FILES', 'READ_MESSAGE_HISTORY']
 			}
 			],
 			reason: 'User requested a new support ticket channel (panel reaction)'
@@ -146,7 +147,7 @@ module.exports = {
 				ping = `@${config.tickets.ping} `;
 			}
 
-			let helpMessage = await c.send(`\`\`\`-close · Schließt dieses Ticket\n-delete · Löscht dieses Ticket. \n-topic · Ändert das Thema \n-add · Fügt jemanden zum Ticket hinzu\`\`\``);
+			let helpMessage = await c.send(`\`\`\`-close · Schließt diese Bewerbung\n-delete · Löscht diese Bewerbung. \n-topic · Ändert das Thema \n-add · Fügt jemanden zum Bewerbung hinzu\`\`\``);
 			await helpMessage.pin();
 
 			await c.send(`Cool ${u} - wir freuen uns über neue aktive Mitglieder. Deine Bewerbung kannst du gleich hier lassen. Ein Mitarbeiter wird sich um alles weitere kümmern.`);
@@ -200,7 +201,7 @@ module.exports = {
 		let self = this;
 		let questions = config.tickets.questions;
 		//let filter = m => m.content !== "";
-		let filter = m => m.author.id === user.id && !m.content.startsWith('-')
+		let filter = m => m.author.id === user.id && !m.content.startsWith('-');
 
 		if (!!questions[iterator]){
 			channel.send(
@@ -231,8 +232,18 @@ module.exports = {
 									){
 
 										channel.setName(keyword+ "-" + this.ticketName);
-										channel.send(`Aufgrund der Erwähnung von \`${keyword}\` wurde die Zuständigkeit an <@&${config.tickets.roleMapping[role]}> übergeben. Bitte fahre mit der Beantwortung der Fragen fort.`)
-										
+										channel.send(`Aufgrund der Erwähnung von \`${keyword}\` wurde die Zuständigkeit an <@&${config.tickets.roleMapping[role]}> übergeben. Bitte fahre mit der Beantwortung der Fragen fort.`);
+
+										console.log(questions, "<-- vorher");
+										console.log(questions.length,config.tickets.questions.length);
+										if (config.tickets.extraQuestions[role].length > 0 && questions.length === config.tickets.questions.length){
+											console.log("add questions of", role);
+											config.tickets.extraQuestions[role].forEach((extraQuestion) => {
+												questions.splice(questions.length-1, 0, extraQuestion);
+											});
+										}
+
+										console.log(questions, "<-- nachher");
 										moderatorRole = role;
 									}
 								});
