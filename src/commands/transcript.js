@@ -43,7 +43,7 @@ module.exports = {
 			);
 		}
 
-		if (message.author.id !== ticket.creator && !message.member.roles.cache.has(config.staff_role) && !message.member.roles.cache.has(750317990750191616)) {
+		if (message.author.id !== ticket.creator && !message.member.roles.cache.has(config.staff_role)) {
 			return message.channel.send(
 				new MessageEmbed()
 					.setColor(config.err_colour)

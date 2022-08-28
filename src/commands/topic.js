@@ -7,7 +7,6 @@
  */
 
 const { MessageEmbed } = require('discord.js');
-const { checkTopic } = require('../modules/utils');
 
 module.exports = {
 	name: 'topic',
@@ -49,9 +48,6 @@ module.exports = {
 					.setFooter(guild.name, guild.iconURL())
 			);
 		}
-
-		let response = checkTopic(message, config, ticket);
-
 
 		message.channel.setTopic(`<@${ticket.creator}> | ` + topic);
 

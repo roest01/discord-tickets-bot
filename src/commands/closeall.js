@@ -27,7 +27,7 @@ module.exports = {
 	async execute(client, message, args, log, { config, Ticket }) {
 		const guild = client.guilds.cache.get(config.guild);
 
-		if (!message.member.roles.cache.has(config.staff_role) && !message.member.roles.cache.has(750317990750191616))
+		if (!message.member.roles.cache.has(config.staff_role))
 			return message.channel.send(
 				new MessageEmbed()
 					.setColor(config.err_colour)
@@ -210,7 +210,7 @@ module.exports = {
 						res.embed = embed;
 
 						try {
-							if (config.commands.close.send_transcripts) dm.send(res).catch(() => log.warn(`Could not send a DM to ${u.tag}`));
+							if (config.commands.close.send_transcripts) dm.send(res);
 							if (config.transcripts.channel.length > 1) client.channels.cache.get(config.transcripts.channel).send(res);
 						} catch (e) {
 							message.channel.send('❌ Couldn\'t send DM or transcript log message');

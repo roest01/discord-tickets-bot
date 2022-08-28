@@ -63,8 +63,8 @@ module.exports = {
 			log: join(__dirname, `../../user/transcripts/raw/${ticket.get('channel')}.log`),
 			json: join(__dirname, `../../user/transcripts/raw/entities/${ticket.get('channel')}.json`)
 		};
-
-		if (message.author.id !== ticket.creator && !message.member.roles.cache.has(config.staff_role) && !message.member.roles.cache.has(750317990750191616))
+console.log("cloooose", config.staff_role2);
+		if (message.author.id !== ticket.creator && !message.member.roles.cache.has(config.staff_role) && !message.member.roles.cache.has(config.staff_role2))
 			return message.channel.send(
 				new MessageEmbed()
 					.setColor(config.err_colour)
@@ -194,7 +194,7 @@ module.exports = {
 					res.embed = embed;
 
 					try {
-						if (config.commands.close.send_transcripts) dm.send(res).catch(() => log.warn(`Could not send a DM to ${u.tag}`));
+						if (config.commands.close.send_transcripts) dm.send(res);
 						if (config.transcripts.channel.length > 1) client.channels.cache.get(config.transcripts.channel).send(res);
 					} catch (e) {
 						message.channel.send('❌ Konnte keine DM oder Archivierungs Nachricht senden.');
